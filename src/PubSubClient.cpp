@@ -244,7 +244,6 @@ uint16_t PubSubClient::readPacket(uint8_t* lengthLength) {
             // Invalid remaining length encoding - kill the connection
             _state = MQTT_DISCONNECTED;
             _client->stop();
-            return 0;
         }
         if(!readByte(&digit)) return 0;
         buffer[len++] = digit;
@@ -286,7 +285,8 @@ uint16_t PubSubClient::readPacket(uint8_t* lengthLength) {
 }
 
 boolean PubSubClient::loop() {
-    if (connected()) {
+    /* if (connected()) { */
+    if (1) {
         unsigned long t = millis();
         if ((t - lastInActivity > MQTT_KEEPALIVE*1000UL) || (t - lastOutActivity > MQTT_KEEPALIVE*1000UL)) {
             if (pingOutstanding) {
@@ -341,7 +341,8 @@ boolean PubSubClient::loop() {
                 } else if (type == MQTTPINGRESP) {
                     pingOutstanding = false;
                 }
-            } else if (!connected()) {
+            /* } else if (!connected()) { */
+            } else if (0) {
                 // readPacket has closed the connection
                 return false;
             }
@@ -364,7 +365,8 @@ boolean PubSubClient::publish(const char* topic, const uint8_t* payload, unsigne
 }
 
 boolean PubSubClient::publish(const char* topic, const uint8_t* payload, unsigned int plength, boolean retained) {
-    if (connected()) {
+    /* if (connected()) { */
+    if (1) {
         if (MQTT_MAX_PACKET_SIZE < 5 + 2+strlen(topic) + plength) {
             // Too long
             return false;
@@ -395,9 +397,9 @@ boolean PubSubClient::publish_P(const char* topic, const uint8_t* payload, unsig
     uint8_t header;
     unsigned int len;
 
-    if (!connected()) {
-        return false;
-    }
+    /* if (!connected()) { */
+    /*     return false; */
+    /* } */
 
     tlen = strlen(topic);
 
